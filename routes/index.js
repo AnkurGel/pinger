@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
 function ping() {
   console.log("Pinging at ", new Date().getTime());
   var defer = q.defer();
-  request(process.env.pingUrl || 'http://localhost:3001', function(err, data) {
+  request(process.env.PING_URL || 'http://localhost:3001', function(err, data) {
     setTimeout(function() {
       try{
         defer.resolve(JSON.parse(data.body));
