@@ -28,7 +28,7 @@ function ping() {
           timestamp: new Date().getTime()
         });
       }
-    }, 5000);
+    }, 15*60*1000);
   });
   defer.promise.then(pingLog, pingLog).then(ping).done();
 }
