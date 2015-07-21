@@ -38,7 +38,7 @@ function ping() {
           timestamp: new Date().getTime()
         });
       }
-    }, 15*60*1000);
+    }, 3000);
   });
   defer.promise.then(pingLog, pingLog).then(ping).done();
 }
@@ -50,6 +50,7 @@ function pingLog(json) {
       body: json,
       json: true
     };
+    console.log(opts);
     request.post(opts, function(err, res){ });
   });
 }
