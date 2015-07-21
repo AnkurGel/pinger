@@ -15,13 +15,23 @@ router.get('/', function(req, res, next) {
   });
 });
 
+router.post('/ping.json', function(req, res, next) {
+  var pingsCollection = req.pings;
+  pingsCollection.update(req.body._id, { $set: { pingBack: true }}, function(err, data) {
+  });
+  res.json({status: true});
+});
+
 function ping() {
   console.log("Pinging at ", new Date().getTime());
   var defer = q.defer();
+  var requestData;
   request(process.env.PING_URL || 'http://localhost:3001', function(err, data) {
     setTimeout(function() {
       try{
-        defer.resolve(JSON.parse(data.body));
+        requestData = JSON.parse(data.body);
+        requestData.pingBack = false; // default
+        defer.resolve(requestData);
       } catch(e) {
         defer.reject({
           response: "Couldn't connect for some reason",
@@ -35,7 +45,12 @@ function ping() {
 function pingLog(json) {
   var pingsCollection = db.get('pings');
   pingsCollection.insert(json, function(req, ping){
-    console.log(json);
+    var opts = {
+      url: process.env.PINGLOL_URL || 'http://localhost:3000/ping.json',
+      body: json,
+      json: true
+    };
+    request.post(opts, function(err, res){ });
   });
 }
 ping();

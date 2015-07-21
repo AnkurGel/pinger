@@ -7,8 +7,10 @@ block content
       tr
         th Response
         th Received at
+        th PingBack Server
     each ping in pings
       tr
         td= ping.response
         td= new Date(ping.timestamp)
+        td= ping.pingBack
 
