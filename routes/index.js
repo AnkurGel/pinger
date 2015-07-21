@@ -21,26 +21,32 @@ router.post('/ping.json', function(req, res, next) {
   });
   res.json({status: true});
 });
+var sleepTime = new Date();
+sleepTime.setHours(22);
 
 function ping() {
-  console.log("Pinging at ", new Date().getTime());
-  var defer = q.defer();
-  var requestData;
-  request(process.env.PING_URL || 'http://localhost:3001', function(err, data) {
-    setTimeout(function() {
-      try{
-        requestData = JSON.parse(data.body);
-        requestData.pingBack = false; // default
-        defer.resolve(requestData);
-      } catch(e) {
-        defer.reject({
-          response: "Couldn't connect for some reason",
-          timestamp: new Date().getTime()
-        });
-      }
-    }, 15*60*1000);
-  });
-  defer.promise.then(pingLog, pingLog).then(ping).done();
+  if(new Date() < sleepTime) {
+    console.log("Pinging at ", new Date().getTime());
+    var defer = q.defer();
+    var requestData;
+    request(process.env.PING_URL || 'http://localhost:3001', function(err, data) {
+      setTimeout(function() {
+        try{
+          requestData = JSON.parse(data.body);
+          requestData.pingBack = false; // default
+          defer.resolve(requestData);
+        } catch(e) {
+          defer.reject({
+            response: "Couldn't connect for some reason",
+            timestamp: new Date().getTime()
+          });
+        }
+      }, 15*60*1000);
+    });
+    defer.promise.then(pingLog, pingLog).then(ping).done();
+  } else {
+    console.log("Putting pingLOL at rest on ", new Date());
+  }
 }
 function pingLog(json) {
   var pingsCollection = db.get('pings');
