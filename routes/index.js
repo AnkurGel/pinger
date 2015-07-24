@@ -4,10 +4,15 @@ var router = express.Router();
 var strftime = require('strftime');
 var request = require('request');
 var monk = require('monk');
+var basicAuth = require("basic-auth-connect");
+
+
+var auth = basicAuth('foo', 'bar');
 var db = monk(process.env.PROD_MONGODB || "localhost:27017/pings");
+var defer;
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', auth, function(req, res, next) {
   var pingsCollection = req.pings;
   pingsCollection.find({}, {sort: {timestamp: -1}}, function(err, pings) {
     if(typeof(pings) == 'undefined') pings = [];
