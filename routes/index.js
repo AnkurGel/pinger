@@ -32,7 +32,7 @@ sleepTime.setHours(22);
 function ping() {
   if(new Date() < sleepTime) {
     console.log("Pinging at ", new Date().getTime());
-    var defer = q.defer();
+    defer = q.defer();
     var requestData;
     request(process.env.PING_URL || 'http://localhost:3001', function(err, data) {
       setTimeout(function() {

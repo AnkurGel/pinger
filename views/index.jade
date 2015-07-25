@@ -4,12 +4,13 @@ block content
   h1= title
   table.table.table-hover
     thead
-      tr(class= ping.pingBack.toString() == "true" ? "success" : "alert")
+      tr
         th Response
         th Received at
         th PingBack Server
     each ping in pings
-      tr
+      tr(class= ping.pingBack && ping.pingBack.toString() == "true" ? "success" : "danger")
         td= ping.response
         td= new Date(ping.timestamp)
+        td= ping.pingBack
 
