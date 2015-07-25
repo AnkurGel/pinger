@@ -4,7 +4,7 @@ block content
   h1= title
   table.table.table-hover
     thead
-      tr
+      tr(class= ping.pingBack.toString() == "true" ? "success" : "alert")
         th Response
         th Received at
         th PingBack Server
@@ -12,5 +12,4 @@ block content
       tr
         td= ping.response
         td= new Date(ping.timestamp)
-        td= ping.pingBack
 
