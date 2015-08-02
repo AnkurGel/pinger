@@ -50,14 +50,14 @@ function ping() {
     });
     defer.promise.then(pingLog, pingLog).then(ping).done();
   } else {
-    console.log("Putting pingLOL at rest on ", new Date());
+    console.log("Putting pinger at rest on ", new Date());
   }
 }
 function pingLog(json) {
   var pingsCollection = db.get('pings');
   pingsCollection.insert(json, function(req, ping){
     var opts = {
-      url: process.env.PINGLOL_URL || 'http://localhost:3000/ping.json',
+      url: process.env.PINGER_URL || 'http://localhost:3000/ping.json',
       body: json,
       json: true
     };
